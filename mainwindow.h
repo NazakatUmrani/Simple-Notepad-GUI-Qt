@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QDir>
 #include <QMessageBox>
+#include <QTextStream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,8 +27,10 @@ private slots:
 
     void on_actionClose_triggered();
 
+    void on_actionSave_triggered();
+
 private:
     Ui::MainWindow *ui;
-    QFile *File;
+    QFile *myFile;
 };
 #endif // MAINWINDOW_H
