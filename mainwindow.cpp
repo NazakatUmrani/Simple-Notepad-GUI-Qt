@@ -32,7 +32,7 @@ void MainWindow::on_actionOpen_triggered()
         myFile->close();
     myFile->setFileName(QFileDialog::getOpenFileName(this,"Open a File",QDir::homePath()));
     if (!myFile->open(QFile::ReadWrite | QFile::Text)){
-        QMessageBox::critical(this,"Error", "File not opened");
+        on_actionClose_triggered();
         return;
     }
     ui->textField->setEnabled(true);
@@ -63,25 +63,24 @@ void MainWindow::on_actionNew_triggered()
 void MainWindow::on_actionClose_triggered()
 {
     ui->textField->setDisabled(true);
+    ui->textField->clear();
+    this->setWindowTitle("Notepad");
+    ui->actionClose->setDisabled(true);
+    ui->actionSave->setDisabled(true);
+    ui->actionSave_as->setDisabled(true);
     if(myFile->isOpen()){
         myFile->close();
-        ui->textField->clear();
-        //on_actionNew_triggered();
-        this->setWindowTitle("Notepad");
-        ui->actionClose->setDisabled(true);
-        ui->actionSave->setDisabled(true);
-        ui->actionSave_as->setDisabled(true);
     }
     else
-        QMessageBox::information(this, "Information", "No file is opened");
+        QMessageBox::warning(this, "Warning", "No file selected\nNo file is opened try again...");
 }
 
 void MainWindow::on_actionSave_triggered()
 {
-    QTextStream out(myFile);
     if(myFile->fileName() == (QDir::tempPath()+"/SimpleNotepadTempFile.txt")){
         myFile = new QFile(QFileDialog::getSaveFileName(this, "Select a name and Location", QDir::homePath()));
-        myFile->open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Text);
+        QTextStream out(myFile);
+        myFile->open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate);
         this->setWindowTitle("Notepad "+myFile->fileName());
         out << ui->textField->toPlainText();
         myFile->flush();
@@ -89,7 +88,16 @@ void MainWindow::on_actionSave_triggered()
     else {
         myFile->close();
         myFile->open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate);
+        QTextStream out(myFile);
         out << ui->textField->toPlainText();
         myFile->flush();
     }
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox aboutDev(QMessageBox::NoIcon,"About Developer","This app is developed by Nazakat Umrani (21SW49)\nFor More information visit my Github Account\nGithub: github.com/nazakatumrani",QMessageBox::Close);
+    QPixmap devPic(":/resources/icons/devPic.png");
+    aboutDev.setIconPixmap(devPic.scaled(100,100,Qt::KeepAspectRatio));
+    aboutDev.exec();
 }
