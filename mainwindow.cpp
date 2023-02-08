@@ -6,10 +6,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->textField->setDisabled(true);
-    ui->actionClose->setDisabled(true);
-    ui->actionSave->setDisabled(true);
-    ui->actionSave_as->setDisabled(true);
     myFile = new QFile();
 }
 
@@ -27,7 +23,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    ui->textField->clear();
     if(myFile->isOpen())
         myFile->close();
     myFile->setFileName(QFileDialog::getOpenFileName(this,"Open a File",QDir::homePath()));
@@ -35,10 +30,7 @@ void MainWindow::on_actionOpen_triggered()
         on_actionClose_triggered();
         return;
     }
-    ui->textField->setEnabled(true);
-    ui->actionClose->setEnabled(true);
-    ui->actionSave->setEnabled(true);
-    ui->actionSave_as->setEnabled(true);
+    setActions(true);
     this->setWindowTitle("Notepad "+myFile->fileName());
     QTextStream in(myFile);
     QString line = in.readAll();
@@ -48,26 +40,18 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionNew_triggered()
 {
     myFile->setFileName(QDir::tempPath()+"/SimpleNotepadTempFile.txt");
-    ui->textField->clear();
     if(!myFile->open(QIODevice::ReadWrite | QIODevice::Text)){
         QMessageBox::information(this,"Error","No new file created");
         return;
     }
     this->setWindowTitle("Notepad UntitledFile");
-    ui->actionClose->setEnabled(true);
-    ui->actionSave->setEnabled(true);
-    ui->actionSave_as->setEnabled(true);
-    ui->textField->setEnabled(true);
+    setActions(true);
 }
 
 void MainWindow::on_actionClose_triggered()
 {
-    ui->textField->setDisabled(true);
-    ui->textField->clear();
+    setActions(false);
     this->setWindowTitle("Notepad");
-    ui->actionClose->setDisabled(true);
-    ui->actionSave->setDisabled(true);
-    ui->actionSave_as->setDisabled(true);
     if(myFile->isOpen()){
         myFile->close();
     }
@@ -100,4 +84,17 @@ void MainWindow::on_actionAbout_triggered()
     QPixmap devPic(":/resources/icons/devPic.png");
     aboutDev.setIconPixmap(devPic.scaled(100,100,Qt::KeepAspectRatio));
     aboutDev.exec();
+}
+
+void MainWindow::setActions(bool x){
+    ui->textField->clear();
+    ui->textField->setEnabled(x);
+    ui->actionClose->setEnabled(x);
+    ui->actionSave->setEnabled(x);
+    ui->actionSave_as->setEnabled(x);
+    ui->actionCopy->setEnabled(x);
+    ui->actionCut->setEnabled(x);
+    ui->actionPaste->setEnabled(x);
+    ui->actionUndo->setEnabled(x);
+    ui->actionRedo->setEnabled(x);
 }

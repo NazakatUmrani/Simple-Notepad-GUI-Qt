@@ -22,16 +22,13 @@ public:
 
 private slots:
     void on_actionOpen_triggered();
-
     void on_actionNew_triggered();
-
     void on_actionClose_triggered();
-
     void on_actionSave_triggered();
-
     void on_actionAbout_triggered();
 
 private:
+    void setActions(bool);
     Ui::MainWindow *ui;
     QFile *myFile;
 };
