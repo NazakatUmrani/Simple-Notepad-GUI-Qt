@@ -99,3 +99,30 @@ void MainWindow::setActions(bool x){
     ui->actionUndo->setEnabled(x);
     ui->actionRedo->setEnabled(x);
 }
+
+void MainWindow::on_actionCopy_triggered()
+{
+    ui->textField->copy();
+}
+
+void MainWindow::on_actionCut_triggered()
+{
+    ui->textField->cut();
+}
+
+void MainWindow::on_actionPaste_triggered()
+{
+    ui->textField->paste();
+}
+
+void MainWindow::on_actionUndo_triggered()
+{
+    ui->textField->undo();
+}
+
+
+void MainWindow::on_actionRedo_triggered()
+{
+    ui->textField->redo();
+}
+

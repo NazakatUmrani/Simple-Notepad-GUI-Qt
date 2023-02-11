@@ -11,5 +11,6 @@
         <file>icons/paste.png</file>
         <file>icons/redo.png</file>
         <file>icons/devPic.png</file>
+        <file>icons/cut.png</file>
     </qresource>
 </RCC>
