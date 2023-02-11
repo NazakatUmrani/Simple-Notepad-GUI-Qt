@@ -89,6 +89,7 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::setActions(bool x){
     ui->textField->clear();
     ui->textField->setEnabled(x);
+    ui->textField->setFocus();
     ui->actionClose->setEnabled(x);
     ui->actionSave->setEnabled(x);
     ui->actionSave_as->setEnabled(x);
