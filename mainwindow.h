@@ -37,6 +37,8 @@ private slots:
 
     void on_actionRedo_triggered();
 
+    void on_actionSave_as_triggered();
+
 private:
     void setActions(bool);
     Ui::MainWindow *ui;

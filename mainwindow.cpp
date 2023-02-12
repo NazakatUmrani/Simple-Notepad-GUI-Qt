@@ -120,9 +120,17 @@ void MainWindow::on_actionUndo_triggered()
     ui->textField->undo();
 }
 
-
 void MainWindow::on_actionRedo_triggered()
 {
     ui->textField->redo();
 }
 
+void MainWindow::on_actionSave_as_triggered()
+{
+    myFile = new QFile(QFileDialog::getSaveFileName(this, "Select a name and Location", QDir::homePath()));
+    QTextStream out(myFile);
+    myFile->open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate);
+    this->setWindowTitle("Notepad "+myFile->fileName());
+    out << ui->textField->toPlainText();
+    myFile->flush();
+}
